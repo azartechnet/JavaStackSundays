@@ -1,0 +1,7 @@
+create database sundaydb;
+create table adminlogin(adminid varchar(100),adminname varchar(100));
+insert into adminlogin values('admin','admin@123');
+
+select * from adminlogin;
+
+create table product(pid varchar(100),pname varchar(100),pprice varchar(100));

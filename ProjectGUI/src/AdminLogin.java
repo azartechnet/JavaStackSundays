@@ -4,8 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.awt.event.ActionEvent;
 
 public class AdminLogin extends JFrame {
 
@@ -46,7 +53,7 @@ public class AdminLogin extends JFrame {
 		lblNewLabel.setBounds(200, 21, 86, 22);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("AdminName");
+		JLabel lblNewLabel_1 = new JLabel("AdminId");
 		lblNewLabel_1.setBounds(34, 78, 76, 22);
 		contentPane.add(lblNewLabel_1);
 		
@@ -55,8 +62,8 @@ public class AdminLogin extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("Password");
-		lblNewLabel_2.setBounds(35, 188, 45, 13);
+		JLabel lblNewLabel_2 = new JLabel("AdminName");
+		lblNewLabel_2.setBounds(35, 188, 75, 21);
 		contentPane.add(lblNewLabel_2);
 		
 		textField_1 = new JTextField();
@@ -65,6 +72,46 @@ public class AdminLogin extends JFrame {
 		textField_1.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Submit");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					String a1=textField.getText();
+					String p1=textField_1.getText();
+					
+					String str1="select * from adminlogin";
+					
+					 // Load MySQL JDBC Driver
+				    Class.forName("com.mysql.cj.jdbc.Driver");
+
+				    // Establish connection to the MySQL database
+				    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sundaydb","root","root");
+				    
+					Statement stmt=conn.createStatement();
+					
+					ResultSet rs=stmt.executeQuery(str1);
+					
+					rs.next();
+					String uname=rs.getString(1);
+					String pass=rs.getString(2);
+					
+					if(a1.equals(uname)&&p1.equals(pass))
+					{
+						JOptionPane.showMessageDialog(btnNewButton,"LoginSucce!!");
+						new AdminHomePage().setVisible(true);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(btnNewButton,"LoginFail!!!");
+					}
+				}
+				catch(Exception t)
+				{
+					
+				}
+			}
+		});
 		btnNewButton.setBounds(35, 264, 85, 21);
 		contentPane.add(btnNewButton);
 		
